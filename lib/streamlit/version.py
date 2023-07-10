@@ -17,6 +17,7 @@ import random
 
 import packaging.version
 from importlib_metadata import version as _version
+from importlib_metadata import PackageNotFoundError
 from typing_extensions import Final
 
 import streamlit.logger as logger
@@ -30,7 +31,10 @@ PYPI_STREAMLIT_URL = "https://pypi.org/pypi/streamlit/json"
 # should_show_new_version_notice() is called.
 CHECK_PYPI_PROBABILITY = 0.10
 
-STREAMLIT_VERSION_STRING: Final[str] = _version("streamlit")
+try:
+    STREAMLIT_VERSION_STRING: Final[str] = _version("streamlit")
+except PackageNotFoundError:
+    STREAMLIT_VERSION_STRING: Final[str] = 'beta'
 
 
 def _version_str_to_obj(version_str) -> packaging.version.Version:
